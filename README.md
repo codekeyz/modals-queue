@@ -23,12 +23,12 @@ While working on [Achieve App](https://theachieveproject.com/), we implemented S
 
 - We wanted to isolate the business logic behind the Achievements from the Client.
 
-#### Client Side
+  #### Client Side
 
-    - Client gets a silent push notification that triggers a call to fetch in-app modals.
+  - Client gets a silent push notification that triggers a call to fetch in-app modals.
 
-    - We load this modals into memory and parse using registered templates.
+  - We load this modals into memory and parse using registered templates.
 
-    - We queue the modals in a smooth way that does not interrupt user navigation in the app.
+  - We queue the modals in a smooth way that does not interrupt user navigation in the app.
 
-    eg: We didn't want to interrupt user while in the process of making a transaction.
+    eg: We didn't want to interrupt user while in the process of making a deposit or withdrawal.
