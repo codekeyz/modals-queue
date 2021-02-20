@@ -25,10 +25,22 @@ While working on [Achieve App](https://theachieveproject.com/), we implemented S
 
   #### Client Side
 
-  - Client gets a silent push notification that triggers a call to fetch in-app modals.
+  - Client receives a silent push notification that triggers a call to fetch in-app modals.
 
-  - We load this modals into memory and parse using registered templates.
-
-  - We queue the modals in a smooth way that does not interrupt user navigation in the app.
+  - We load this modals into memory and queue in a smooth way that does not interrupt user navigation in the app.
 
     eg: We didn't want to interrupt user while in the process of making a deposit or withdrawal.
+
+### Motivation
+
+- The Idea is to make the `View` handle attaching & detaching Modal Event Listeners. Remember MVP pattern in Android? yeah, something similar.
+
+- The `ModalProvider` should only care about Listeners being registered and relaying the events sequentially through them.
+
+- The `View` has to acknowledge receipt of the event so we can remove it from the in-memory queue.
+
+#### My Takes
+
+I feel bad for using a `Do-While` to manage the state of the page. Am still figuring out how i can build an `OnResume` callback (not the typical onResume tied to the application lifecycle), I mean an `onResume` for a `Widget` that doesn't require changing lots of stuff around.
+
+Aside the `Do-While` check, the Widget relies on the `onDispose` callback to detach a listener.
