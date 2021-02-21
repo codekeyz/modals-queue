@@ -41,6 +41,14 @@ While working on [Achieve App](https://theachieveproject.com/), we implemented S
 
 #### My Takes
 
-I feel bad for using a `Do-While` to manage the state of the page. Am still figuring out how i can build an `OnResume` callback (not the typical onResume tied to the application lifecycle), I mean an `onResume` for a `Widget` that doesn't require changing lots of stuff around.
+<del>I feel bad for using a `Do-While` to manage the state of the page. Am still figuring out how i can build an `OnResume` callback (not the typical onResume tied to the application lifecycle), I mean an `onResume` for a `Widget` that doesn't require changing lots of stuff around.</del>
 
-Aside the `Do-While` check, the Widget relies on the `onDispose` callback to detach a listener.
+<del>Aside the `Do-While` check, the Widget relies on the `onDispose` callback to detach a listener.</del>
+
+I was able to build a Widget LifeCycle Callback that exposes an `OnResume` & `OnPaused`. I can now use this to re-attach and detach the `ModalListener`. Get me beer 🔥 🔥 🚀
+
+The `Widget LifeCycle Callback` relies heavily on the Route Names. It compares the `current` and `previous` route so it can determine if page needed resume or pause callback.
+
+NB: This doesn't require changing too many stuffs around and that's the goal. Also, it works fine in my current setup.
+
+Let me know if you have any issues.
