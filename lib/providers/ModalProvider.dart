@@ -44,7 +44,6 @@ class ModalProvider with ChangeNotifier {
 
   detachListener(String key) {
     _modalListeners.remove(key);
-    notifyListeners();
 
     // if a listener still available after detaching $key, just proceed with updates
     if (listensCount > 0) {
