@@ -37,27 +37,23 @@ class ModalProvider with ChangeNotifier {
 
   attachListener(String key, ModalListener listener) {
     _modalListeners[key] = listener;
-    sl.get<Logger>().d('Attached Listener: $key');
+    notifyListeners();
 
     _acK();
   }
 
   detachListener(String key) {
     _modalListeners.remove(key);
-    sl.get<Logger>().d('Detached Listener: $key');
+    notifyListeners();
 
     // if a listener still available after detaching $key, just proceed with updates
     if (listensCount > 0) {
       _acK();
-      sl
-          .get<Logger>()
-          .d('$listensCount Listeners available: continueing with updates');
       return;
     }
 
     if (_debounce?.isActive ?? false) {
       _debounce.cancel();
-      sl.get<Logger>().d('No Listeners available: cancelling scheduled timer');
     }
   }
 
@@ -133,6 +129,8 @@ class ModalProvider with ChangeNotifier {
         widget: ModalWidget(_modalToShow),
         ack: () {
           _queuedModalsInMemory.remove(_modalToShow.id);
+          notifyListeners();
+
           _acK();
         },
       ),
