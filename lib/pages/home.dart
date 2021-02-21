@@ -157,8 +157,7 @@ class _HomePageState extends State<HomePage> with ModalAware, LifeCycleMixin {
                   height: 45,
                   child: RaisedButton(
                     onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) => PageA()));
+                      Navigator.of(context).pushNamed(PageA.id);
                     },
                     child: Text('Go to PageA'),
                     textColor: Colors.white,

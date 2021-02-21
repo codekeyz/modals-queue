@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:modal_queue/pages/page_b.dart';
 import 'package:modal_queue/services/serviceLocator.dart';
 import 'package:logger/logger.dart';
+import 'package:modal_queue/util/lifecycle_impl.dart';
 
-class PageA extends StatelessWidget {
+class PageA extends StatelessWidget with LifeCycleMixin {
+  static final String id = 'PageA';
+
   @override
   Widget build(BuildContext context) {
+    sl.get<LifeCycleEventBus>().attachListener(PageA.id, this);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Page A'),
