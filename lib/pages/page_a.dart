@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:modal_queue/pages/page_b.dart';
+import 'package:modal_queue/services/serviceLocator.dart';
+import 'package:logger/logger.dart';
 
-class PageA extends StatefulWidget {
-  static final String id = 'PageA';
-
-  @override
-  _PageAState createState() => _PageAState();
-}
-
-class _PageAState extends State<PageA> {
+class PageA extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,5 +45,15 @@ class _PageAState extends State<PageA> {
         ],
       ),
     );
+  }
+
+  @override
+  void onPaused() {
+    sl.get<Logger>().d('PageA is paused.');
+  }
+
+  @override
+  void onResume() {
+    sl.get<Logger>().d('PageA is resumed.');
   }
 }
