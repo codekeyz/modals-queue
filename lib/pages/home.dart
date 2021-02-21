@@ -3,14 +3,33 @@ import 'package:modal_queue/modal/modal_extension.dart';
 import 'package:modal_queue/providers/ModalProvider.dart';
 import 'package:modal_queue/pages/page_a.dart';
 import 'package:provider/provider.dart';
+import 'package:modal_queue/services/serviceLocator.dart';
+
+import 'package:modal_queue/util/lifecycle_impl.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with ModalAware {
+class _HomePageState extends State<HomePage> with ModalAware, LifeCycleMixin {
   ModalProvider _modalProv;
+
+  @override
+  void initState() {
+    super.initState();
+    sl.get<LifeCycleEventBus>().attachListener('/', this);
+  }
+
+  @override
+  void onResume() {
+    attachModalListener();
+  }
+
+  @override
+  void onPaused() {
+    detachModalListener();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +54,36 @@ class _HomePageState extends State<HomePage> with ModalAware {
                 children: <Widget>[
                   Card(
                     child: ListTile(
-                      title: Text('Listener Attached'),
-                      subtitle: Text('Listener state of the page'),
+                      title: Text('Modal Listener Attached'),
+                      subtitle: Text(
+                        "modals are shown when listener is attached",
+                      ),
                       trailing: Text(
                         '${_modalProv.isListenerAttached(listenerKey)}',
                         style: _themeData.textTheme.headline6,
                       ),
                     ),
                   ),
+                  if (_modals.isEmpty)
+                    Container(
+                      height: 200,
+                      margin: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
+                      child: Text('Pull to fetch modals'),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 0.5,
+                        ),
+                      ),
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                    ),
                   ListView.separated(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
                     primary: false,
                     shrinkWrap: true,
                     separatorBuilder: (_, __) => SizedBox(height: 16),
@@ -119,7 +157,8 @@ class _HomePageState extends State<HomePage> with ModalAware {
                   height: 45,
                   child: RaisedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(PageA.id);
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => PageA()));
                     },
                     child: Text('Go to PageA'),
                     textColor: Colors.white,
