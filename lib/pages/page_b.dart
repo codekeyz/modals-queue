@@ -4,6 +4,11 @@ import 'package:modal_queue/providers/ModalProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:modal_queue/pages/page_c.dart';
 
+import 'package:modal_queue/services/serviceLocator.dart';
+import 'package:logger/logger.dart';
+
+import 'package:modal_queue/util/lifecycle_impl.dart';
+
 class PageB extends StatefulWidget {
   static final String id = 'PageB';
 
@@ -11,8 +16,14 @@ class PageB extends StatefulWidget {
   _PageBState createState() => _PageBState();
 }
 
-class _PageBState extends State<PageB> with ModalAware {
+class _PageBState extends State<PageB> with ModalAware, LifeCycleMixin {
   ModalProvider _modalProv;
+
+  @override
+  void initState() {
+    super.initState();
+    sl.get<LifeCycleEventBus>().attachListener(PageB.id, this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,4 +75,14 @@ class _PageBState extends State<PageB> with ModalAware {
 
   @override
   ModalProvider get modalProv => _modalProv;
+
+  @override
+  void onResume() {
+    attachModalListener();
+  }
+
+  @override
+  void onPaused() {
+    detachModalListener();
+  }
 }
